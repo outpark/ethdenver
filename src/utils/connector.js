@@ -39,7 +39,7 @@ const fetchJSON = (input, init) => {
     static getContract(web3, addr) {
         // console.log(ContractAbi.abi);
         console.log(web3);
-        return web3.eth.contract(abiArray).at(addr);
+        return web3.eth.contract(ContractAbi.abi).at(addr);
       }
   }
   
