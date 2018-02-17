@@ -1,0 +1,14 @@
+.navbar-container {
+    padding-left:15px;
+    padding-right:15px;
+}
+
+@media screen and (max-width: 440px) and (min-width: 200px) {
+    .navbar-container {
+        padding-left:3px;
+        padding-right:3px;
+    }
+    .navbar-container a {
+        font-size: 11px;
+    }
+}

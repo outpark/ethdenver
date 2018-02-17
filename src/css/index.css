@@ -1,0 +1,10 @@
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding|Nunito');
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-family: 'Nunito', sans-serif;
+}
+  

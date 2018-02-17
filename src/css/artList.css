@@ -1,0 +1,86 @@
+.artList-container {
+    margin-top:60px !important;
+}
+
+.artList-row-container {
+    max-width: 1000px;
+    margin:0 auto;
+}
+.artList-card-container {
+    cursor: pointer;
+}
+.artList-card-container :hover img{
+ transform: scale(1.1);
+}
+
+.box-container {
+    width: 90%;
+    height:100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+.box-container img{
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 600px) and (min-width: 200px) {
+    .box-container img{
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+.modal-image {
+    width:100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.modal-body {
+    width:80%;
+    padding-top:30px;
+    padding-bottom:10px;
+    margin: 0 auto;
+}
+.rodal-cancel-btn, .rodal-confirm-btn {
+    position: absolute;
+    font: inherit;
+    bottom: 16px;
+    width: 80px;
+    padding: 4px 15px;
+    border-radius: 3px;
+    transition: background .2s;
+}
+
+.rodal-confirm-btn {
+    color: #fff;
+    right: 16px;
+    height:40px;
+    background: #d9534f;
+    border: 1px solid #d43f3a;
+    cursor: pointer;
+}
+
+.rodal-confirm-btn:hover {
+    background: #c9302c;
+    border-color: #ac2925;
+}
+
+.rodal-cancel-btn {
+    color: #03a9f4;
+    left: 16px;
+    height:40px;
+    background: #fff;
+    border: 1px solid #03a9f4;
+    cursor: pointer;
+}
+
+.rodal-cancel-btn:hover {
+    background: #fafafa;
+}
+
+.rodal-close {
+    transform: scale(1.5);
+}
