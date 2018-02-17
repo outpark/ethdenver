@@ -2,6 +2,8 @@ import qs from 'qs';
 import Web3 from 'web3';
 import IpfsApi from 'ipfs-api';
 import ContractAbi from './contract-abi.json';
+import Buffer from 'buffer';
+const toBuffer = require('blob-to-buffer');
 
 // connect to ipfs daemon API server
 var ipfs = IpfsApi('localhost', '5001', {protocol: 'http'}) // leaving out the arguments will default to these values
@@ -40,7 +42,29 @@ const fetchJSON = (input, init) => {
         // console.log(ContractAbi.abi);
         console.log(web3);
         return web3.eth.contract(abiArray).at(addr);
-      }
+    }
+
+    static uploadImage(file){
+        console.log(file);
+        console.log(ipfs);
+        var blob = new Blob([file.preview], {type : file.type});
+        toBuffer(blob, function (err, buffer) {
+            if (err) throw err
+           
+            buffer[0] // => 1
+            buffer.readUInt8(1) // => 2
+            console.log(buffer);
+            ipfs.files.add(buffer, (err, result) => { // Upload buffer to IPFS
+                if(err) {
+                  console.error(err)
+                  return
+                }
+                let url = `https://ipfs.io/ipfs/${result[0].hash}`
+                console.log(`Url --> ${url}`)
+            })
+          })
+    }
+
   }
   
 

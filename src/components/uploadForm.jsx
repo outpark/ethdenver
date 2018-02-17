@@ -63,6 +63,7 @@ class UploadForm extends React.Component {
             console.log("ABOUT TO SUBMIT")
             console.log(this.state.pictures);
             console.log(Connector.getContract(this.props.web3, 0x06012c8cf97bead5deae237070f9587f8e7a266d));
+            Connector.uploadImage(this.state.pictures[0]);
         }
     }
 
