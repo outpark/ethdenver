@@ -17,6 +17,7 @@ class UploadForm extends React.Component {
             price:0,
             description:"",
             pictures: [],
+            forSale:true,
             titleErr:false,
             priceErr:false
          };
@@ -50,8 +51,10 @@ class UploadForm extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props.web3);
-        // console.log(Connector.getContract(this.props.web3, 0x06012c8cf97bead5deae237070f9587f8e7a266d));
+        // console.log(this.props.web3);
+        // setTimeout(function() {
+        //     console.log(Connector.getContract(this.props.web3, 0x75c35c980c0d37ef46df04d31a140b65503c0eed));
+        // }, 15000)
     }
 
     handleSubmit(e) {
@@ -62,8 +65,19 @@ class UploadForm extends React.Component {
         }else{
             console.log("ABOUT TO SUBMIT")
             console.log(this.state.pictures);
-            console.log(Connector.getContract(this.props.web3, 0x06012c8cf97bead5deae237070f9587f8e7a266d));
-            Connector.uploadImage(this.state.pictures[0]);
+            (async () => {
+                try {
+                    let contract = await Connector.getContract(this.props.web3, 0xed494f53a4d73e46b23157f6f7592160ede60435);
+                    let url = await Connector.uploadImage(this.state.pictures[0]);
+                    let result = await Connector.createArtwork(contract, this.state.title, this.state.price, url, this.state.forSale);
+                    console.log(result);
+                }catch(err){
+                    console.log(err);
+                }
+                
+                
+            })()
+            
         }
     }
 

@@ -13,6 +13,7 @@ class Upload extends Component {
         }
     }
     componentDidMount() {
+        console.log(getWeb3);
         getWeb3
         .then(results => {
           this.setState({

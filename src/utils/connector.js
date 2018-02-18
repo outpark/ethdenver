@@ -37,17 +37,31 @@ const fetchJSON = (input, init) => {
       })
   }
 
+const uploadBlob = (blob) => {
+    var reader = new FileReader();
+    console.log(reader);
+    var result = new Promise((resolve, reject) => {
+      reader.onload = async () => {
+        var result = await ipfs.files.add([Buffer.from(reader.result)]);
+        resolve(result[0].hash);
+      };
+    });
+    reader.readAsArrayBuffer(blob);
+    return result;
+}
+
   export default class Connector {
     static getContract(web3, addr) {
         // console.log(ContractAbi.abi);
         console.log(web3);
-        return web3.eth.contract(abiArray).at(addr);
+        return web3.eth.contract(ContractAbi.abi).at(addr);
     }
-
-    static uploadImage(file){
+    static async uploadImage(file){
         console.log(file);
         console.log(ipfs);
-        var blob = new Blob([file.preview], {type : file.type});
+        // var hash = await uploadBlob(file);
+        // console.log(hash);
+        var blob = new Blob([file], {type : file.type});
         toBuffer(blob, function (err, buffer) {
             if (err) throw err
            
@@ -61,9 +75,19 @@ const fetchJSON = (input, init) => {
                 }
                 let url = `https://ipfs.io/ipfs/${result[0].hash}`
                 console.log(`Url --> ${url}`)
+                return url;
             })
           })
     }
+
+    static createArtwork(contract, title, price, url, forSale) {
+        console.log("@@@@@#####");
+        console.log(contract);
+        console.log(url);
+        return contract.createArtwork(title, price, url, forSale);
+    }
+
+
 
   }
   
