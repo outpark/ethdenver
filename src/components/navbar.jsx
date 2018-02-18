@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Input, Menu } from 'semantic-ui-react';
 
 import '../css/navbar.css'
@@ -18,6 +17,10 @@ class Navbar extends React.Component {
             this.setState({activeItem:"market"});
         }else if(this.props.match.url === "/artists"){
             this.setState({activeItem:"artists"});
+        }else if(this.props.match.url === "/upload"){
+            this.setState({activeItem:"upload"});
+        }else if(this.props.match.url === "/collections"){
+            this.setState({activeItem:"collections"});
         }
     }
 
@@ -36,17 +39,19 @@ class Navbar extends React.Component {
     render() {
         const { activeItem } = this.state
         return(
-            <Menu secondary className="navbar-container">
-                <Menu.Item name='AppName' active={this.state.activeItem === 'AppName'} onClick={this.handleItemClick} />
-                <Menu.Menu position='right'>
-                    <Menu.Item name='market' active={this.state.activeItem === 'market'} onClick={this.handleItemClick} />
-                    <Menu.Item name='artists' active={this.state.activeItem === 'artists'} onClick={this.handleItemClick} />
-                    <Menu.Item name='upload' active={this.state.activeItem === 'upload'} onClick={this.handleItemClick} />
-                </Menu.Menu>
-                <Menu.Menu position='right'>
-                    <Menu.Item name='collections' active={this.state.activeItem === 'collections'} onClick={this.handleItemClick} />
-                </Menu.Menu>
-            </Menu>
+            <div className="navbar-outer-container">
+                <Menu secondary className="navbar-container">
+                    <Menu.Item name='AppName' active={this.state.activeItem === 'AppName'} onClick={this.handleItemClick} />
+                    <Menu.Menu position='right'>
+                        <Menu.Item name='market' active={this.state.activeItem === 'market'} onClick={this.handleItemClick} />
+                        <Menu.Item name='artists' active={this.state.activeItem === 'artists'} onClick={this.handleItemClick} />
+                        <Menu.Item name='upload' active={this.state.activeItem === 'upload'} onClick={this.handleItemClick} />
+                    </Menu.Menu>
+                    <Menu.Menu position='right'>
+                        <Menu.Item name='collections' active={this.state.activeItem === 'collections'} onClick={this.handleItemClick} />
+                    </Menu.Menu>
+                </Menu>
+            </div>
         )
     }
     

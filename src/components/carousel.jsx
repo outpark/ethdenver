@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 
 import '../css/carousel.css'
@@ -7,27 +6,37 @@ import '../css/carousel.css'
 class Carousel extends React.Component {
     
     render() {
+        // const settings = {
+        //     dots: true,
+        //     infinite: true,
+        //     fade: true,
+        //     slidesToShow: 1,
+        //     slidesToScroll: 1,
+        //     vertical: true,
+        //     speed: 700,
+        //     autoplaySpeed: 2000,
+        //   };
         const settings = {
             dots: true,
-            className: 'center',
-            centerMode: true,
             // lazyLoad: true,
             fade: true,
             infinite: true,
             speed: 700,
             slidesToShow: 1,
             slidesToScroll: 1,
-            initialSlide: 2,
+            initialSlide: 0,
+            vertical: true,
             autoplay: true,
-            autoplaySpeed: 3000
+            autoplaySpeed: 3500
         };
         return (
             <div className="carousel-container">
               <Slider {...settings}>
-                <div><img src={'https://www-dev.brookdalecc.edu/wp-content/uploads/2015/02/digital-arts.jpg'} /></div>
-                <div><img src={'https://static.boredpanda.com/blog/wp-content/uploads/2017/02/IMG_20170114_222025_931-58a01296a1b60__880.jpg'} /></div>
-                <div><img src={'https://cdn.segmentnext.com/wp-content/uploads/2015/07/Minecraft-Deep-Sea-1.jpg'} /></div>
-                <div><img src={'https://cdt.nd.edu/assets/149874/original/digital_arts.jpg'} /></div>
+                <div><img src={'https://ipfs.io/ipfs/QmTZXAv7wPahM49RaP6Rrx4EvFzFebJfTgMsppXp3SHMy5'} alt="art work"/></div>
+                <div><img src={'https://ipfs.io/ipfs/QmYyGN8VvZ9ZwSowLjGCS8eGFZ9MZTRPjyJt6rEAbKeUrA'} alt="art work"/></div>
+                <div><img src={'https://ipfs.io/ipfs/Qma5LSk7nvKm9mxo3n7sZhkpS2ihE6xBYDjGzkZ9oEk4q5'} alt="art work"/></div>
+                <div><img src={'https://ipfs.io/ipfs/QmR28BGVouJYbSV11esboe5dfFKMkVEWTBB6cVqnmokiN2'} alt="art work"/></div>
+                <div><img src={'https://ipfs.io/ipfs/QmNNMJVP6NyExRP8j4NQCdGxkb9bwehjR7eg97fRPWDSmV'} alt="art work"/></div>
               </Slider>
             </div>
         )

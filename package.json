@@ -17,6 +17,7 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
     "react-slick": "^0.18.1",
+    "react-toastify": "^3.3.4",
     "rodal": "^1.6.3",
     "semantic-ui-css": "^2.2.14",
     "semantic-ui-react": "^0.78.2",

@@ -1,13 +1,11 @@
 import React from 'react';
 // import ImageUploader from 'react-images-upload';
 import Dropzone from 'react-dropzone'
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
-import { Input, Button, Label, Form, TextArea  } from 'semantic-ui-react';
+import { toast } from 'react-toastify';
+import { Input, Button, Label, Form, TextArea, Radio  } from 'semantic-ui-react';
 import Connector from '../utils/connector';
 import '../css/uploadForm.css';
-
-
 
 class UploadForm extends React.Component {
     constructor(props) {
@@ -17,7 +15,7 @@ class UploadForm extends React.Component {
             price:0,
             description:"",
             pictures: [],
-            forSale:true,
+            forSale:false,
             titleErr:false,
             priceErr:false
          };
@@ -26,6 +24,7 @@ class UploadForm extends React.Component {
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handlePriceChange = this.handlePriceChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+        this.handleToggleChange = this.handleToggleChange.bind(this);
 
     }
 
@@ -55,6 +54,7 @@ class UploadForm extends React.Component {
         // setTimeout(function() {
         //     console.log(Connector.getContract(this.props.web3, 0x75c35c980c0d37ef46df04d31a140b65503c0eed));
         // }, 15000)
+
     }
 
     handleSubmit(e) {
@@ -68,11 +68,18 @@ class UploadForm extends React.Component {
             (async () => {
                 try {
                     console.log(this.props.web3.eth.coinbase);
-                    let contract = await Connector.getContract(this.props.web3, 0xed494f53a4d73e46b23157f6f7592160ede60435);
-                    // let url = await Connector.uploadImage(this.state.pictures[0]);
-                    let result = await Connector.createArtwork(contract, this.props.web3.eth.coinbase, this.state.title, this.state.price, "https://ipfs.io/ipfs/QmR9DAU4qoreNJnazK1Dhy1inU8pzdaif9NUVdke191jGW", this.state.forSale);
+                    let art = {
+                        title:this.state.title,
+                        price:this.state.price,
+                        forSale: this.state.forSale
+                    }
+                    let contract = await Connector.getContract(this.props.web3, "0xaa95173df80abf6ff745d449b187c0374639151d");
+                    let result = await Connector.uploadAndCreateArt(this.state.pictures[0], contract, this.props.web3.eth.coinbase, art);
+                    // let result = await Connector.createArtwork(contract, this.props.web3.eth.coinbase, this.state.title, this.state.price, "https://ipfs.io/ipfs/QmR9DAU4qoreNJnazK1Dhy1inU8pzdaif9NUVdke191jGW", this.state.forSale);
                     console.log(result);
+                    toast(`You have uploaded your artwork!`, {type:"success"})
                 }catch(err){
+                    toast(err, {type:"error"})
                     console.log(err);
                 }
             })()
@@ -83,7 +90,7 @@ class UploadForm extends React.Component {
     handleTitleChange(e) {
         
         this.setState({ title: e.target.value });
-        if(this.state.title.length <= 2){
+        if(this.state.title.length <= 1){
             this.setState({
                 titleErr:true
             });
@@ -103,6 +110,12 @@ class UploadForm extends React.Component {
     }
     handleDescriptionChange(e) {
         this.setState({ description: e.target.value });
+    }
+
+    handleToggleChange() {
+        this.setState({
+            forSale:!this.state.forSale
+        });
     }
 
     render() {
@@ -138,6 +151,10 @@ class UploadForm extends React.Component {
                         </ul>
                         </aside>
                     </div>
+                </div>
+                <div className="uploadForm-row">
+                    <Button content='for sale' onClick={this.focus} className="uploadForm-btn" />
+                    <Radio toggle onClick={this.handleToggleChange}/>
                 </div>
                 <div className="uploadForm-row-btn">
                     <Button primary className="uploadForm-upload-btn" onClick={this.handleSubmit}>Upload to Market</Button>

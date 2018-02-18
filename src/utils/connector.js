@@ -1,5 +1,3 @@
-import qs from 'qs';
-import Web3 from 'web3';
 import IpfsApi from 'ipfs-api';
 import ContractAbi from './contract-abi.json';
 import Buffer from 'buffer';
@@ -8,60 +6,61 @@ const toBuffer = require('blob-to-buffer');
 // connect to ipfs daemon API server
 var ipfs = IpfsApi('localhost', '5001', {protocol: 'http'}) // leaving out the arguments will default to these values
 
-// Web3 stuff
-const rootUrl = "";
-let web3 =  new Web3(new Web3.providers.HttpProvider(rootUrl));
+// const uploadBlob = (blob) => {
+//     var reader = new FileReader();
+//     console.log(reader);
+//     var result = new Promise((resolve, reject) => {
+//       reader.onload = async () => {
+//         var result = await ipfs.files.add([Buffer.from(reader.result)]);
+//         resolve(result[0].hash);
+//       };
+//     });
+//     reader.readAsArrayBuffer(blob);
+//     return result;
+// }
 
-
-
-class APIRequestError extends Error {
-    constructor(response) {
-      super(response.statusText);
-      this.response = response;
-      this.status = response.status;
-      this.statusText = response.statusText;
-    }
-  }
-const fetchJSON = (input, init) => {
-    return fetch(input, {
-        ...init,
-        credentials: 'same-origin'
-      })
-      .then((res) => {
-        if (res.ok) {
-  
-        } else {
-          throw new APIRequestError(res);
-        }
-        return res.json();
-      })
-  }
-
-const uploadBlob = (blob) => {
-    var reader = new FileReader();
-    console.log(reader);
-    var result = new Promise((resolve, reject) => {
-      reader.onload = async () => {
-        var result = await ipfs.files.add([Buffer.from(reader.result)]);
-        resolve(result[0].hash);
-      };
+const createArtwork = function(contract, coinbase, title, price, url, forSale) {
+    console.log("Creating artwork...");
+    console.log(contract);
+    let combined = title + "@" +url;
+    contract.createArtwork(
+        title, combined, price, forSale,{gas:600000},
+        function(err, result) {
+        console.log("Artwork created");
+        console.log(err, result);
+        if(err)
+            throw(err);
     });
-    reader.readAsArrayBuffer(blob);
-    return result;
+    
 }
 
   export default class Connector {
+    web3Contract = {}
+
     static getContract(web3, addr) {
-        // console.log(ContractAbi.abi);
         console.log(web3);
-        return web3.eth.contract(ContractAbi.abi).at(addr);
+        if(!Object.hasOwnProperty(this.web3Contract)){
+            this.web3Contract = web3.eth.contract(ContractAbi.abi).at(addr);
+        }
+        return this.web3Contract;
     }
 
-    static uploadCreate(file, contract, artObj) {
-        console.log(file);
-        console.log(ipfs);
-        // var hash = await uploadBlob(file);
-        // console.log(hash);
+    static fetchAllArtworks() {
+        this.web3Contract.newArtwork({}, {fromBlock: 0, toBlock: 'latest'}).get((error, eventResult) => {
+            if (error)
+              console.log('Error in myEvent event handler: ' + error);
+            else{
+                console.log(eventResult)
+                return eventResult;
+            }
+        })
+    }
+
+    static fetchForSaleArtworks() {
+
+    }
+
+    static uploadAndCreateArt(file, contract, coinbase, artObj) {
         var blob = new Blob([file], {type : file.type});
         toBuffer(blob, function (err, buffer) {
             if (err) throw err
@@ -75,47 +74,49 @@ const uploadBlob = (blob) => {
                 }
                 let url = `https://ipfs.io/ipfs/${result[0].hash}`
                 console.log(`Url --> ${url}`)
-                // this.createArtwork(contract, artObj.title, artObj.price, url, artObj.forSale)
-                return url;
+                return createArtwork(contract, coinbase, artObj.title, artObj.price, url, artObj.forSale)
             })
           })
     }
-    static uploadImage(file){
-        console.log(file);
-        console.log(ipfs);
-        // var hash = await uploadBlob(file);
-        // console.log(hash);
-        var blob = new Blob([file], {type : file.type});
-        toBuffer(blob, function (err, buffer) {
-            if (err) throw err
-            buffer[0] // => 1
-            buffer.readUInt8(1) // => 2
-            console.log(buffer);
-            ipfs.files.add(buffer, (err, result) => { // Upload buffer to IPFS
-                if(err) {
-                  console.error(err)
-                  throw err;
-                }
-                let url = `https://ipfs.io/ipfs/${result[0].hash}`
-                console.log(`Url --> ${url}`)
-                return url;
-            })
-          })
-    }
+    // static uploadImage(file){
+    //     // console.log(file);
+    //     // console.log(ipfs);
+    //     // var hash = await uploadBlob(file);
+    //     // console.log(hash);
+    //     var blob = new Blob([file], {type : file.type});
+    //     toBuffer(blob, function (err, buffer) {
+    //         if (err) throw err
+    //         buffer[0] // => 1
+    //         buffer.readUInt8(1) // => 2
+    //         console.log(buffer);
+    //         ipfs.files.add(buffer, (err, result) => { // Upload buffer to IPFS
+    //             if(err) {
+    //               console.error(err)
+    //               throw err;
+    //             }
+    //             let url = `https://ipfs.io/ipfs/${result[0].hash}`
+    //             console.log(`Url --> ${url}`)
+    //             return url;
+    //         })
+    //     })
+    // }
 
-    static createArtwork(contract,coinbase, title, price, url, forSale) {
-        console.log("@@@@@#####");
-        console.log(contract);
-        console.log(coinbase);
-        contract.createArtwork(
-            title, url, price, forSale,{gas:600000, from: "0xA1432ea596b9C7c283A9BC041C378eb93696C974"},
-            function(err, result) {
-            console.log("@#@#@VUYIHOJ");
-            console.log(err, result);
-        });
-    }
+    // static createArtwork(contract,coinbase, title, price, url, forSale) {
+    //     console.log("@@@@@#####");
+    //     console.log(contract);
+    //     console.log(coinbase);
+    //     contract.createArtwork(
+    //         title, url, price, forSale,{gas:600000, from: "0xA1432ea596b9C7c283A9BC041C378eb93696C974"},
+    //         function(err, result) {
+    //         console.log("@#@#@VUYIHOJ");
+    //         console.log(err, result);
+    //     });
+    // }
 
-  }
+    static purchaseArtwork(contract, coinbase) {
+
+    }
+}
   
 
 const abiArray = [

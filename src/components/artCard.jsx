@@ -1,25 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Card, Icon } from 'semantic-ui-react'
 import '../css/artCard.css'
 
 class ArtCard extends React.Component {
-    constructor(props){
-        super(props);
-    }
     render() {
-        const extra = (
+        let extra = {};
+        this.props.art.forSale ? extra = (
             <a>
-              <Icon name='user' />
-              16 ETH
+              <Icon name='at' />
+              {this.props.art.price} ETH
             </a>
-          )
+        ) : extra = (
+            <a>
+              <Icon name='tags' />
+              Not For Sale
+            </a>
+        );
         return(
             <Card
                 image={this.props.art.imgUrl}
-                header='Elliot Baker'
-                meta='Friend'
-                description='Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat.'
+                header={this.props.art.title}
+                meta={this.props.art.creator}
                 extra={extra}
                 className="card-container"
             />
