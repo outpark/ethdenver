@@ -6,3 +6,8 @@
     /* max-height:200px; */
     height:auto;
 }
+.meta {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

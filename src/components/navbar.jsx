@@ -32,6 +32,8 @@ class Navbar extends React.Component {
             this.props.history.replace("/");
         }else if(name === "upload"){
             this.props.history.replace("/upload")
+        }else if(name === "collections"){
+            this.props.history.replace("/collections")
         }
 
     }

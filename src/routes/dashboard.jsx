@@ -7,7 +7,6 @@ import ArtList from '../components/artList';
 import getWeb3 from '../utils/getWeb3';
 import Connector from '../utils/connector';
 
-// import 'react-toastify/dist/ReactToastify.min.css';
 import '../css/dashboard.css';
 const defaultDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
@@ -18,6 +17,7 @@ class Dashboard extends Component {
       web3: null,
       artWorks:[]
     }
+    this.formatEvents = this.formatEvents.bind(this);
   }
     //   this.setState({
     //     artWorks:[
@@ -35,6 +35,26 @@ class Dashboard extends Component {
     //         imgUrl:"http://www.tooft.com/wp-content/uploads/2010/11/Digital-Art-Painting.jpg"}
     //     ]
     // })
+  formatEvents(events) {
+    let artworks = [];
+    events.forEach((event) => {
+      let pair = event.args.title.split('@');
+      console.log(event);
+      artworks.push({
+        title: pair[0],
+        imgUrl: pair[1],
+        creator:event.args.originalCreator,
+        price: event.args.price.c[0]+(0.1*event.args.price.s)+(0.01*event.args.price.e),
+        description:defaultDescription,
+        forSale: event.args.forSale
+      });
+    });
+    console.log(artworks);
+    this.setState({
+      artWorks: artworks
+    });
+  }
+
   componentWillMount() {
     
     getWeb3
@@ -42,15 +62,15 @@ class Dashboard extends Component {
       this.setState({
         web3: results.web3
       })
-      console.log("WEB# CONENCTED");
       toast(`Web3 Connected!`, {
         type: "success"
       });
       (async () => {
         try {
-          let contract = await Connector.getContract(results.web3, "0xaa95173df80abf6ff745d449b187c0374639151d");
+          let contract = await Connector.getContract(results.web3);
           Connector.fetchAllArtworks(contract).then((results) => {
             console.log(results);
+            this.formatEvents(results);
           }).catch((err) => {
             console.log(err);
           });
@@ -58,13 +78,8 @@ class Dashboard extends Component {
           console.log(err);
         }
       })()
-      
-      // Instantiate contract once web3 provided.
-      // this.instantiateContract()
-      
     })
     .catch((err) => {
-      console.log('Error finding web3.');
       toast(`Error finding web3. Please connect to Metamask.`, {
         type: "error"
       });

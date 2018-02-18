@@ -6,6 +6,18 @@
     padding-right:15px;
     
 }
+.ui.secondary.menu .active.item {
+    height: 40px;
+    border-radius: 0;
+}
+.ui.secondary.menu .item {
+    height: 40px;
+}
+.item {
+    height: 100%;
+    border-radius: 0;
+}
+
 
 @media screen and (max-width: 440px) and (min-width: 200px) {
     .navbar-container {

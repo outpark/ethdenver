@@ -73,7 +73,7 @@ class UploadForm extends React.Component {
                         price:this.state.price,
                         forSale: this.state.forSale
                     }
-                    let contract = await Connector.getContract(this.props.web3, "0xaa95173df80abf6ff745d449b187c0374639151d");
+                    let contract = await Connector.getContract(this.props.web3);
                     let result = await Connector.uploadAndCreateArt(this.state.pictures[0], contract, this.props.web3.eth.coinbase, art);
                     // let result = await Connector.createArtwork(contract, this.props.web3.eth.coinbase, this.state.title, this.state.price, "https://ipfs.io/ipfs/QmR9DAU4qoreNJnazK1Dhy1inU8pzdaif9NUVdke191jGW", this.state.forSale);
                     console.log(result);
@@ -88,7 +88,6 @@ class UploadForm extends React.Component {
     }
 
     handleTitleChange(e) {
-        
         this.setState({ title: e.target.value });
         if(this.state.title.length <= 1){
             this.setState({
