@@ -6,7 +6,7 @@ const toBuffer = require('blob-to-buffer');
 // connect to ipfs daemon API server
 var ipfs = IpfsApi('localhost', '5001', {protocol: 'http'}) // leaving out the arguments will default to these values
 
-const defaultAddr = "0x655fe0423443a3b85ef67c5d5fe5f0f5c0a90fd1";
+const defaultAddr = "0xb20a5449f23fb5198234c20935442c55e3faa9ae";
 
 const createArtwork = function(contract, coinbase, title, price, url, forSale) {
     console.log("Creating artwork...");

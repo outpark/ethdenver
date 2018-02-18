@@ -7,7 +7,7 @@ class Navbar extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            activeItem:'AppName'
+            activeItem:'Artenize'
         }
         this.handleItemClick = this.handleItemClick.bind(this);
     }
@@ -28,7 +28,7 @@ class Navbar extends React.Component {
         this.setState({ activeItem: name });
         if(name === "market"){
             this.props.history.replace("/market");
-        }else if(name === "AppName"){
+        }else if(name === "Artenize"){
             this.props.history.replace("/");
         }else if(name === "upload"){
             this.props.history.replace("/upload")
@@ -43,7 +43,7 @@ class Navbar extends React.Component {
         return(
             <div className="navbar-outer-container">
                 <Menu secondary className="navbar-container">
-                    <Menu.Item name='AppName' active={this.state.activeItem === 'AppName'} onClick={this.handleItemClick} />
+                    <Menu.Item name='Artenize' active={this.state.activeItem === 'Artenize'} onClick={this.handleItemClick} />
                     <Menu.Menu position='right'>
                         <Menu.Item name='market' active={this.state.activeItem === 'market'} onClick={this.handleItemClick} />
                         <Menu.Item name='artists' active={this.state.activeItem === 'artists'} onClick={this.handleItemClick} />

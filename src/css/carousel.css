@@ -13,3 +13,29 @@
         padding: 0;
     }
 }
+
+#overlay {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 350px;
+    top: 42px;
+    left: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+#text{
+    position: absolute;
+    top: 170px;
+    width:400px;
+    left: 50%;
+    text-align: left;
+    font-size: 50px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    line-height: 60px;
+}
