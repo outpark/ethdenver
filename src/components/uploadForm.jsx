@@ -67,15 +67,14 @@ class UploadForm extends React.Component {
             console.log(this.state.pictures);
             (async () => {
                 try {
+                    console.log(this.props.web3.eth.coinbase);
                     let contract = await Connector.getContract(this.props.web3, 0xed494f53a4d73e46b23157f6f7592160ede60435);
-                    let url = await Connector.uploadImage(this.state.pictures[0]);
-                    let result = await Connector.createArtwork(contract, this.state.title, this.state.price, url, this.state.forSale);
+                    // let url = await Connector.uploadImage(this.state.pictures[0]);
+                    let result = await Connector.createArtwork(contract, this.props.web3.eth.coinbase, this.state.title, this.state.price, "https://ipfs.io/ipfs/QmR9DAU4qoreNJnazK1Dhy1inU8pzdaif9NUVdke191jGW", this.state.forSale);
                     console.log(result);
                 }catch(err){
                     console.log(err);
                 }
-                
-                
             })()
             
         }

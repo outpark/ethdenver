@@ -56,7 +56,8 @@ const uploadBlob = (blob) => {
         console.log(web3);
         return web3.eth.contract(ContractAbi.abi).at(addr);
     }
-    static async uploadImage(file){
+
+    static uploadCreate(file, contract, artObj) {
         console.log(file);
         console.log(ipfs);
         // var hash = await uploadBlob(file);
@@ -64,14 +65,36 @@ const uploadBlob = (blob) => {
         var blob = new Blob([file], {type : file.type});
         toBuffer(blob, function (err, buffer) {
             if (err) throw err
-           
             buffer[0] // => 1
             buffer.readUInt8(1) // => 2
             console.log(buffer);
             ipfs.files.add(buffer, (err, result) => { // Upload buffer to IPFS
                 if(err) {
                   console.error(err)
-                  return
+                  throw err;
+                }
+                let url = `https://ipfs.io/ipfs/${result[0].hash}`
+                console.log(`Url --> ${url}`)
+                // this.createArtwork(contract, artObj.title, artObj.price, url, artObj.forSale)
+                return url;
+            })
+          })
+    }
+    static uploadImage(file){
+        console.log(file);
+        console.log(ipfs);
+        // var hash = await uploadBlob(file);
+        // console.log(hash);
+        var blob = new Blob([file], {type : file.type});
+        toBuffer(blob, function (err, buffer) {
+            if (err) throw err
+            buffer[0] // => 1
+            buffer.readUInt8(1) // => 2
+            console.log(buffer);
+            ipfs.files.add(buffer, (err, result) => { // Upload buffer to IPFS
+                if(err) {
+                  console.error(err)
+                  throw err;
                 }
                 let url = `https://ipfs.io/ipfs/${result[0].hash}`
                 console.log(`Url --> ${url}`)
@@ -80,14 +103,17 @@ const uploadBlob = (blob) => {
           })
     }
 
-    static createArtwork(contract, title, price, url, forSale) {
+    static createArtwork(contract,coinbase, title, price, url, forSale) {
         console.log("@@@@@#####");
         console.log(contract);
-        console.log(url);
-        return contract.createArtwork(title, price, url, forSale);
+        console.log(coinbase);
+        contract.createArtwork(
+            title, url, price, forSale,{gas:600000, from: "0xA1432ea596b9C7c283A9BC041C378eb93696C974"},
+            function(err, result) {
+            console.log("@#@#@VUYIHOJ");
+            console.log(err, result);
+        });
     }
-
-
 
   }
   
